@@ -33,9 +33,25 @@ Create a `.devcontainer/devcontainer.json` file in your project with the followi
 
 ```json
 {
-	"name": "My Devcontainer",
 	"image": "ghcr.io/brpaz/devcontainer:latest",
-	// ...
+	"runArgs": [ // Mount the Docker socket to allow using Docker CLI inside the container
+    "-v",
+    "/var/run/docker.sock:/var/run/docker.sock",
+  ],
+  "remoteUser": "dev",
+  "customizations": {
+    "vscode": {
+      "extensions": ["mkhl.direnv", "arrterian.nix-env-selector"],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/usr/bin/zsh",
+          },
+        },
+      },
+    },
+  },
 }
 ```
 
