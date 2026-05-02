@@ -1,0 +1,138 @@
+# ZSH Configuration file.
+# This file is loaded by zsh at startup.
+# It should be kept as small as possible for better readability.
+# You can place your custom configuration in ~/.zshrc.d directory, which is loaded by Antidote plugin.
+
+# =================================================
+# Antidote plugin manager setup
+# =================================================
+[[ -e ~/.antidote ]] || git clone https://github.com/mattmc3/antidote.git ~/.antidote
+
+# Antidone configuration
+export ANTIDOTE_HOME=~/.local/share/antidote/plugins
+. ~/.antidote/antidote.zsh
+antidote load
+
+# =================================================
+# Shell options
+# =================================================          # Change to a directory just by typing its name
+setopt auto_cd
+setopt auto_pushd
+setopt NO_CASE_GLOB
+
+# =================================================
+# History configuration
+# =================================================
+HISTFILE=~/.zsh_history    #Where to save history to disk
+
+# Number of history entries to save in memory and in the file
+HISTSIZE=50000     # Number of commands to keep in memory
+SAVEHIST=10000     # Number of commands to save in the file
+HISTDUP=erase               #Erase duplicates in the history file
+
+# Avoid duplicates and improve history usability
+setopt HIST_IGNORE_DUPS        # Ignore duplicate commands in history
+setopt HIST_IGNORE_ALL_DUPS    # Remove older duplicate commands, keeping the latest
+setopt HIST_REDUCE_BLANKS      # Remove extra spaces from commands
+setopt HIST_IGNORE_SPACE       # Ignore commands starting with a space
+setopt HIST_VERIFY             # Edit history commands before executing them
+setopt HIST_SAVE_NO_DUPS       # Do not write duplicates to history file
+
+# Make history more robust
+setopt APPEND_HISTORY          # Append to history file instead of overwriting it
+setopt SHARE_HISTORY           # Share history between all Zsh sessions
+setopt INC_APPEND_HISTORY      # Write history incrementally as commands are entered
+setopt EXTENDED_HISTORY        # Save timestamps for each command
+
+# Ignore some commands from history
+export HISTORY_IGNORE="(ls|l|ll|la|pushd|popd|cd|exa|pwd|exit|cd ..|ps|top|htop)"
+
+# Allow navigating up and down in history search using Ctrl+Up and Ctrl-Down
+bindkey '^[[1;5A' history-search-backward
+bindkey '^[[1;5B' history-search-forward
+
+stty -ixon
+
+# =================================================
+# Completion configuration
+# =================================================
+fpath=(~/.zsh/completion $fpath) # custom completions
+autoload -U compinit && compinit
+
+# =================================================
+# Path configuration
+# =================================================
+export PATH=$PATH:~/.local/bin
+export PATH=$PATH:~/bin
+export PATH=$PATH:~/.fnm
+export PATH=$PATH:~/.nix-profile/bin
+
+# Source nix profile if installed
+if [[ -f $HOME/.nix-profile/etc/profile.d/nix.sh ]]; then
+	. $HOME/.nix-profile/etc/profile.d/nix.sh
+fi
+
+# Use .zshrc.d.local for custom configuration.
+# Files in this directory are machine specific and should not be checked into dotfiles repo.
+if [[ -d $HOME/.zshrc.d.local ]]; then
+  for config_file ($HOME/.zshrc.d.local/*.zsh) source $config_file
+fi
+
+# =================================================
+# Zstyles for devcontainer development environment
+# =================================================
+
+# Enable menu selection for completions
+zstyle ':completion:*' menu select
+
+# Case-insensitive completion matching
+zstyle ':completion:*' matcher 'm:{a-zA-Z}={A-Za-z}'
+
+# Colorize completions using LS_COLORS
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# Cache completions for faster response
+zstyle ':completion:*' use-cache on
+
+# Show verbose descriptions for completions
+zstyle ':completion:*' verbose yes
+
+# Group completions by category
+zstyle ':completion:*' group-name ''
+
+# =================================================
+# Command line tools initialization
+# =================================================
+if command -v direnv > /dev/null; then
+	eval "$(direnv hook zsh)"
+fi
+
+if command -v tv > /dev/null; then
+	eval "$(tv init zsh)"
+fi
+
+if command -v fnm > /dev/null; then
+	eval "$(fnm env --use-on-cd --shell zsh)"
+fi
+
+# Setup zoxide for smarter directory navigation
+if command -v zoxide > /dev/null; then
+	eval "$(zoxide init zsh)"
+	alias zi='tv zoxide'
+fi
+
+if command -v task > /dev/null; then
+	eval "$(task --completion zsh)"
+fi
+
+# =================================================
+# Alias configuration
+# =================================================
+alias ls='eza'
+alias bat='batcat'
+alias cat='batcat'
+
+# =================================================
+# Setup prompt
+# ================================================
+eval "$(starship init zsh)"

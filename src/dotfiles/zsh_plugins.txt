@@ -1,0 +1,8 @@
+#  .zsh_plugins.txt
+zsh-users/zsh-completions
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting
+mattmc3/zshrc.d
+MichaelAquilina/zsh-you-should-use
+Aloxaf/fzf-tab
+olets/zsh-abbr
