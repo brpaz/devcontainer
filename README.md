@@ -1,4 +1,4 @@
-# Devcontainers
+# Devcontainer
 
 > My personal [devcontainer](https://containers.dev/).
 
