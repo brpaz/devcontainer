@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y \
 		extrepo \
 		gpg \
 		docker-cli \
+		vim \
 	&& apt-get -y autoremove \
 	&& rm -rf /var/lib/apt/lists/*
 

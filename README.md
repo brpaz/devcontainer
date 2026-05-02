@@ -4,8 +4,8 @@
 
 ## Features
 
-- ZSH Shell with Antidote Plugin Manager and a curated set of plugins
-- Docker in Docker (DinD)
+- ZSH Shell with [Antidote](https://github.com/mattmc3/antidote) Plugin Manager and a curated set of plugins
+- [Docker CLI](https://www.docker.com/)
 - [Nix](https://nixos.org/)
 - [Devenv](https://devenv.sh)
 - [Direnv](https://direnv.net/)
