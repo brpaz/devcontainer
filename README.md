@@ -66,7 +66,7 @@ Create a `.devcontainer/devcontainer.json` file in your project with the followi
 ### Building a devcontainer
 
 ```bash
-task build
+./scripts/build.sh
 ```
 
 ### Run the container from docker
